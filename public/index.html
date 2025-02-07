@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h2 { margin: 20px 0; }
+        section { margin-bottom: 20px; }
+        a { color: blue; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h2>Medium Articles</h2>
+    <div id="medium-articles"></div>
+
+    <script>
+        document.getElementById('fetch-articles').addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const mediumArticlesDiv = document.getElementById('medium-articles');
+            mediumArticlesDiv.innerHTML = ""; // Clear previous articles
+
+            if (username) {
+                fetch(`/medium-articles/${username}`)
+                    .then(response => response.json())
+                    .then(articles => {
+                        articles.forEach(article => {
+                            const title = article.title;
+                            const link = article.link;
+
+                            const articleSection = document.createElement('section');
+                            articleSection.innerHTML = `
+                                <h3>${title}</h3>
+                                <a href="${link}" target="_blank">Read More</a>
+                            `;
+                            mediumArticlesDiv.appendChild(articleSection);
+                        });
+                    })
+                    .catch(err => console.error('Error fetching Medium articles:', err));
+    </script>
+</body>
+</html>
